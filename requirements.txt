@@ -1,0 +1,9 @@
+streamlit
+yfinance
+pandas
+matplotlib
+scipy.stats
+numpy
+numpy.random
+datetime
+dateutil.relativedelta
