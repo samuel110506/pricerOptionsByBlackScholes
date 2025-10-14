@@ -32,8 +32,7 @@ today=datetime.date.today()
 
 riskfreerate=st.selectbox("Select a rate:", rates, format_func=lambda x: f"{(x*100):.1f}%")
 asset=st.selectbox("Select an asset:",tickers)
-data_price = yf.download(asset, period="1d")
-stock_price = data_price['Close'].iloc[-1]
+stock_price = yf.Ticker(ticker).info["regularMarketPrice"]
 print(stock_price)
 maturity=st.date_input("Select the maturity of the option",value=today+ datetime.timedelta(days=1),min_value=today+ datetime.timedelta(days=1))
 time=(maturity-today).days/365.25
@@ -51,10 +50,10 @@ d2=d1-sigma*np.sqrt(time)
 call=stock_price*norm.cdf(d1)-strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(d2)
 put=strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(-d2)-stock_price*norm.cdf(-d1)
 
-st.markdown(f'<p style="color:red; font-size:30px; font-weight:bold;">Put Price: USD {put:.2f}</p>', unsafe_allow_html=True)
 
-st.markdown(f'<p style="color:green; font-size:30px; font-weight:bold;">Call Price: USD {call:.2f}</p>', unsafe_allow_html=True)
+st.write(f"Call Price: USD {call:.2f}")
 
+st.write(f"Put Price: USD {put:.2f}")
 
 st.markdown(
     """
@@ -65,6 +64,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
