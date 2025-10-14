@@ -33,7 +33,7 @@ today=datetime.date.today()
 riskfreerate=st.selectbox("Select a rate:", rates, format_func=lambda x: f"{(x*100):.1f}%")
 asset=st.selectbox("Select an asset:",tickers)
 data_price=yf.download(asset,period="1d")
-stock_price=data_price['Close'].iloc[-1]
+stock_price=data_price['Close'].dropna().iloc[-1]
 print(stock_price)
 maturity=st.date_input("Select the maturity of the option",value=today+ datetime.timedelta(days=1),min_value=today+ datetime.timedelta(days=1))
 time=(maturity-today).days/365.25
@@ -65,6 +65,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
