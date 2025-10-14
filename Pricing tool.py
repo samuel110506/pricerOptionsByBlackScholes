@@ -50,9 +50,9 @@ d2=d1-sigma*np.sqrt(time)
 call=stock_price*norm.cdf(d1)-strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(d2)
 put=strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(-d2)-stock_price*norm.cdf(-d1)
 
-st.markdown('<p style="color:red; font-size:30px; font-weight:bold;">Résultat important</p>', unsafe_allow_html=True)
+st.markdown('<p style="color:red; font-size:30px; font-weight:bold;">st.write(f"Put Price: USD {put:.2f}")</p>', unsafe_allow_html=True)
 st.write(f"Put Price: USD {put:.2f}")
-st.markdown('<p style="color:green; font-size:30px; font-weight:bold;">Résultat important</p>', unsafe_allow_html=True)
+st.markdown('<p style="color:green; font-size:30px; font-weight:bold;">st.write(f"Call Price: USD {call:.2f}")</p>', unsafe_allow_html=True)
 st.write(f"Call Price: USD {call:.2f}")
 
 st.markdown(
@@ -64,4 +64,5 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
