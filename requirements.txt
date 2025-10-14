@@ -2,8 +2,9 @@ streamlit
 yfinance
 pandas
 matplotlib
-scipy.stats
+scipy
 numpy
 numpy.random
 datetime
 dateutil.relativedelta
+
