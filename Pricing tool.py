@@ -61,7 +61,7 @@ st.markdown(f'<p style="color:black; font-size:30px; font-weight:bold;">Stock Pr
 maturity=st.date_input("Select the maturity of the option",value=today+ datetime.timedelta(days=1),min_value=today+ datetime.timedelta(days=1))
 time=(maturity-today).days/365.25
 strikeprice = st.number_input("Select the strike price :", min_value=1.0, value=1.0, format="%.2f")
-
+quantity=st.number_input("Select the number of options :", min_value=1, max_value=1000000, step=1)
 data = yf.download(asset, start=today-relativedelta(years=1), end=today)
 data['Return'] = data['Close'].pct_change()
 returns = data['Return'].dropna()
@@ -71,8 +71,8 @@ print(sigma)
 d1=(np.log(stock_price/strikeprice)+(riskfreerate+(1/2)*sigma**2)*time)/(sigma*np.sqrt(time))
 d2=d1-sigma*np.sqrt(time)
 
-call=stock_price*norm.cdf(d1)-strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(d2)
-put=strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(-d2)-stock_price*norm.cdf(-d1)
+call=(stock_price*norm.cdf(d1)-strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(d2))*quantity
+put=(strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(-d2)-stock_price*norm.cdf(-d1))*quantity
 
 S=np.linspace(0,2*stock_price)
 pnl_longcall=np.maximum(S-strikeprice,0)-call
@@ -87,7 +87,7 @@ if st.button("Calculate"):
     ax.plot(S, pnl_shortcall, color='red', label='Short Call')
     ax.axhline(0, color="black", linewidth=0.8, linestyle="--")
     ax.axvline(strikeprice, color="blue", linestyle=":", label="Strike")
-    ax.set_title(f'P&L for trading CALL on {asset} (K={strikeprice})')
+    ax.set_title(f'P&L for trading {quantity} CALL on {asset} (K={strikeprice})')
     ax.set_xlabel('Stock Price')
     ax.set_ylabel('P&L')
     ax.legend()
@@ -97,7 +97,7 @@ if st.button("Calculate"):
     ax2.plot(S, pnl_shortput, color='red', label='Short Put')
     ax2.axhline(0, color="black", linewidth=0.8, linestyle="--")
     ax2.axvline(strikeprice, color="blue", linestyle=":", label="Strike")
-    ax2.set_title(f'P&L for trading PUT on {asset} (K={strikeprice})')
+    ax2.set_title(f'P&L for trading {quantity} PUT on {asset} (K={strikeprice})')
     ax2.set_xlabel('Stock Price')
     ax2.set_ylabel('P&L')
     ax2.legend()
@@ -113,6 +113,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
