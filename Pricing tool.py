@@ -74,7 +74,7 @@ d2=d1-sigma*np.sqrt(time)
 call=(stock_price*norm.cdf(d1)-strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(d2))*quantity
 put=(strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(-d2)-stock_price*norm.cdf(-d1))*quantity
 
-S=np.linspace(0,2*stock_price)
+S=np.linspace(0,1.5*stock_price)
 pnl_longcall=np.maximum(S-strikeprice,0)*quantity-call
 pnl_shortcall=-pnl_longcall
 pnl_longput=np.maximum(strikeprice-S,0)*quantity-put
@@ -113,6 +113,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
