@@ -54,7 +54,7 @@ today=datetime.date.today()
 
 riskfreerate=st.selectbox("Select a rate:", rates, format_func=lambda x: f"{(x*100):.1f}%")
 asset=st.selectbox("Select an asset:", options=list(ticker_names.keys()),format_func=lambda x: ticker_names[x])
-data_price=yf.download(asset,period="1m")
+data_price=yf.download(asset,period="1d")
 stock_price=data_price['Close'].dropna().iloc[-1]
 stock_price = float(stock_price)
 st.markdown(f'<p style="color:black; font-size:30px; font-weight:bold;">Stock Price: USD {stock_price:.2f}</p>', unsafe_allow_html=True)
@@ -113,6 +113,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
