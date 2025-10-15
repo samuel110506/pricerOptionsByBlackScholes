@@ -15,14 +15,14 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 st.title("Pricing tool Call and Put options by Black-Scholes")
-tickers= [
+ticker_names = {
     # Commodities
-    "GC=F", "SI=F", "CL=F", "BZ=F", "NG=F", "HG=F", "ZS=F", "KC=F",
+    "GC=F": "Gold","SI=F": "Silver","CL=F": "Crude Oil","BZ=F": "Brent Oil","NG=F": "Natural Gas","HG=F": "Copper","ZS=F": "Soybeans","KC=F": "Coffee",
     # Indices
-    "^GSPC", "^DJI", "^IXIC", "^FTSE", "^GDAXI", "^FCHI", "^N225", "^HSI",
+    "^GSPC": "S&P 500","^DJI": "Dow Jones","^IXIC": "Nasdaq","^FTSE": "FTSE 100","^GDAXI": "DAX","^FCHI": "CAC 40","^N225": "Nikkei 225","^HSI": "Hang Seng",
     # Equities
-    "AAPL", "MSFT", "AMZN", "GOOG", "META", "TSLA", "NVDA", "JPM", "XOM", "BRK-B"
-]
+    "AAPL": "Apple","MSFT": "Microsoft","AMZN": "Amazon","GOOG": "Alphabet","META": "Meta","TSLA": "Tesla","NVDA": "NVIDIA","JPM": "JPMorgan","XOM": "ExxonMobil"
+}
 
 rates = [0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,
          0.03,0.031,0.032,0.033,0.034,0.035,0.036,0.037,0.038,0.039,
@@ -31,7 +31,7 @@ rates = [0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,
 today=datetime.date.today()
 
 riskfreerate=st.selectbox("Select a rate:", rates, format_func=lambda x: f"{(x*100):.1f}%")
-asset=st.selectbox("Select an asset:",tickers)
+asset=st.selectbox("Select an asset:", options=list(ticker_names.keys()),format_func=lambda x: ticker_names[x])
 data_price=yf.download(asset,period="1d")
 stock_price=data_price['Close'].dropna().iloc[-1]
 stock_price = float(stock_price)
@@ -53,9 +53,9 @@ call=stock_price*norm.cdf(d1)-strikeprice*np.exp((-1)*riskfreerate*time)*norm.cd
 put=strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(-d2)-stock_price*norm.cdf(-d1)
 
 st.markdown(f'<p style="color:green; font-size:30px; font-weight:bold;">Call Price: USD {call:.2f}</p>', unsafe_allow_html=True)
-st.write(f"Call Price: USD {call:.2f}")
+
 st.markdown(f'<p style="color:red; font-size:30px; font-weight:bold;">Put Price: USD {put:.2f}</p>', unsafe_allow_html=True)
-st.write(f"Put Price: USD {put:.2f}")
+
 
 st.markdown(
     """
@@ -66,6 +66,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
