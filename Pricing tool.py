@@ -54,10 +54,10 @@ today=datetime.date.today()
 
 riskfreerate=st.selectbox("Select a rate:", rates, format_func=lambda x: f"{(x*100):.1f}%")
 asset=st.selectbox("Select an asset:", options=list(ticker_names.keys()),format_func=lambda x: ticker_names[x])
-data_price=yf.download(asset,period="1d")
+data_price=yf.download(asset,period="1m")
 stock_price=data_price['Close'].dropna().iloc[-1]
 stock_price = float(stock_price)
-print(stock_price)
+st.markdown(f'<p style="color:black; font-size:30px; font-weight:bold;">Stock Price: USD {stock_price:.2f}</p>', unsafe_allow_html=True)
 maturity=st.date_input("Select the maturity of the option",value=today+ datetime.timedelta(days=1),min_value=today+ datetime.timedelta(days=1))
 time=(maturity-today).days/365.25
 strikeprice = st.number_input("Select the strike price :", min_value=1.0, value=1.0, format="%.2f")
@@ -73,9 +73,35 @@ d2=d1-sigma*np.sqrt(time)
 
 call=stock_price*norm.cdf(d1)-strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(d2)
 put=strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(-d2)-stock_price*norm.cdf(-d1)
+
+S=np.linspace(0,2*stock_price)
+pnl_longcall=np.maximum(S-strikeprice,0)-call
+pnl_shortcall=-pnl_longcall
+pnl_longput=np.maximum(strikeprice-S,0)-premium
+pnl_shortput=-pnl_longput
 if st.button("Calculate"):
     st.markdown(f'<p style="color:green; font-size:30px; font-weight:bold;">Call Price: USD {call:.2f}</p>', unsafe_allow_html=True)
     st.markdown(f'<p style="color:red; font-size:30px; font-weight:bold;">Put Price: USD {put:.2f}</p>', unsafe_allow_html=True)
+    fig, ax = plt.subplots(figsize=(12,4))
+    ax.plot(S, pnl_longcall, color='green', label='Long Call')
+    ax.plot(S, pnl_longput, color='red', label='Long Put')
+    ax.axhline(0, color="black", linewidth=0.8, linestyle="--")
+    ax.axvline(strikeprice, color="blue", linestyle=":", label="Strike")
+    ax.set_title(f'P&L for LONG positions on {asset} (K={strikeprice})')
+    ax.set_xlabel('Stock Price')
+    ax.set_ylabel('P&L')
+    ax.legend()
+    st.pyplot(fig)
+    fig2, ax2 = plt.subplots(figsize=(12,4))
+    ax2.plot(S, pnl_shortcall, color='green', label='Short Call')
+    ax2.plot(S, pnl_shortput, color='red', label='Short Put')
+    ax2.axhline(0, color="black", linewidth=0.8, linestyle="--")
+    ax2.axvline(strikeprice, color="blue", linestyle=":", label="Strike")
+    ax2.set_title(f'P&L for SHORT positions on {asset} (K={strikeprice})')
+    ax2.set_xlabel('Stock Price')
+    ax2.set_ylabel('P&L')
+    ax2.legend()
+    st.pyplot(fig2)
 
 
 st.markdown(
@@ -87,6 +113,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
