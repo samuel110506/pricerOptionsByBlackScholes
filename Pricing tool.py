@@ -75,9 +75,9 @@ call=(stock_price*norm.cdf(d1)-strikeprice*np.exp((-1)*riskfreerate*time)*norm.c
 put=(strikeprice*np.exp((-1)*riskfreerate*time)*norm.cdf(-d2)-stock_price*norm.cdf(-d1))*quantity
 
 S=np.linspace(0,2*stock_price)
-pnl_longcall=np.maximum(S-strikeprice,0)-call
+pnl_longcall=np.maximum(S-strikeprice,0)*quantity-call
 pnl_shortcall=-pnl_longcall
-pnl_longput=np.maximum(strikeprice-S,0)-put
+pnl_longput=np.maximum(strikeprice-S,0)*quantity-put
 pnl_shortput=-pnl_longput
 if st.button("Calculate"):
     st.markdown(f'<p style="color:green; font-size:30px; font-weight:bold;">Call Price: USD {call:.2f}</p>', unsafe_allow_html=True)
@@ -113,6 +113,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
