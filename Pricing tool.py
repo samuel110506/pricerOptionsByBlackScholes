@@ -16,14 +16,36 @@ from dateutil.relativedelta import relativedelta
 
 st.title("Pricing tool Call and Put options by Black-Scholes")
 ticker_names = {
-    # Commodities
-    "GC=F": "Gold","SI=F": "Silver","CL=F": "Crude Oil","BZ=F": "Brent Oil","NG=F": "Natural Gas","HG=F": "Copper","ZS=F": "Soybeans","KC=F": "Coffee",
-    # Indices
-    "^GSPC": "S&P 500","^DJI": "Dow Jones","^IXIC": "Nasdaq","^FTSE": "FTSE 100","^GDAXI": "DAX","^FCHI": "CAC 40","^N225": "Nikkei 225","^HSI": "Hang Seng",
-    # Equities
-    "AAPL": "Apple","MSFT": "Microsoft","AMZN": "Amazon","GOOG": "Alphabet","META": "Meta","TSLA": "Tesla","NVDA": "NVIDIA","JPM": "JPMorgan","XOM": "ExxonMobil"
+    # Commodities futures (US exchange traded)
+    "GC=F": "Gold", "SI=F": "Silver", "CL=F": "Crude Oil WTI", "BZ=F": "Brent Oil", "NG=F": "Natural Gas",
+    "HG=F": "Copper", "ZS=F": "Soybeans", "KC=F": "Coffee", "ZW=F": "Wheat", "ZC=F": "Corn",
+    "CC=F": "Cocoa", "CT=F": "Cotton", "LE=F": "Live Cattle", "HE=F": "Lean Hogs", "PL=F": "Platinum",
+    
+    # US Indices
+    "^GSPC": "S&P 500", "^DJI": "Dow Jones", "^IXIC": "Nasdaq", "^RUT": "Russell 2000",
+    "^VIX": "Volatility Index",
+    
+    # Global Indices (major exchanges only)
+    "^FTSE": "FTSE 100", "^GDAXI": "DAX", "^FCHI": "CAC 40", "^N225": "Nikkei 225", "^HSI": "Hang Seng",
+    "^STOXX50E": "Euro Stoxx 50",
+    
+    # Large Cap US Equities
+    "AAPL": "Apple","MSFT": "Microsoft","AMZN": "Amazon","GOOG": "Alphabet","META": "Meta",
+    "TSLA": "Tesla","NVDA": "NVIDIA","BRK.B": "Berkshire Hathaway","JPM": "JPMorgan","XOM": "ExxonMobil",
+    "JNJ": "Johnson & Johnson","V": "Visa","PG": "Procter & Gamble","MA": "Mastercard","HD": "Home Depot",
+    "CVX": "Chevron","LLY": "Eli Lilly","UNH": "UnitedHealth","WMT": "Walmart","DIS": "Disney",
+    
+    # Sector Leaders
+    "PFE": "Pfizer","MRK": "Merck","PEP": "PepsiCo","KO": "Coca-Cola","MCD": "McDonald's",
+    "BAC": "Bank of America","WFC": "Wells Fargo","GS": "Goldman Sachs","MS": "Morgan Stanley",
+    "ORCL": "Oracle","INTC": "Intel","AMD": "AMD","QCOM": "Qualcomm","NFLX": "Netflix",
+    
+    # ETFs (US listed, highly liquid)
+    "SPY": "SPDR S&P 500 ETF","QQQ": "Invesco Nasdaq 100","DIA": "SPDR Dow Jones ETF","IWM": "iShares Russell 2000",
+    "EFA": "iShares MSCI EAFE","EEM": "iShares Emerging Markets","GLD": "SPDR Gold Trust","SLV": "iShares Silver Trust",
+    "USO": "United States Oil Fund","XLF": "Financial Select Sector","XLK": "Technology Select Sector",
+    "XLV": "Healthcare Select Sector","XLE": "Energy Select Sector","XLU": "Utilities Select Sector",
 }
-
 rates = [0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,
          0.03,0.031,0.032,0.033,0.034,0.035,0.036,0.037,0.038,0.039,
          0.04,0.041,0.042,0.043,0.044,0.045,0.046,0.047,0.048,0.049,0.05]
@@ -65,6 +87,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
